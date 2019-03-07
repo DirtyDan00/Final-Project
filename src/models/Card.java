@@ -10,6 +10,7 @@ public class Card {
 	
 //creates a card with a number and suit
 //getters and setters too
+	//get value function that returns # on the card
 
 	public Card(Numbers numbers, Suit suit) {
 		super();

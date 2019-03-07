@@ -26,7 +26,6 @@ public class Deck implements Serializable {
 
 	public void ReFillDeck() {
 //refills the deck
-		System.out.println(CurrentDeck);
 		if (CurrentDeck.size() == 0 || CurrentDeck == null) {
 
 			for (Suit suit : Suit.values()) {
@@ -39,12 +38,9 @@ public class Deck implements Serializable {
 	}
 
 	public void ShuffleDeck() {
-		//refills the deck, then shuffles
-		//create a shuffle method like in zombie dice
-		//ReFillDeck();
 		Collections.shuffle(CurrentDeck);
 		for (Card card : CurrentDeck) {
-			System.out.println(card);
+			
 		}
 		
 	}
