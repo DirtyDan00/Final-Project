@@ -11,10 +11,10 @@ public class Player implements Serializable {
 	private ArrayList<Card> handOfCards = new ArrayList<Card>();
 	private ArrayList<Card> AIhandOfCards = new ArrayList<Card>();
 	// players hand of cards can only have 5 at a time
-	private int money = 0;
+	private int money;
 	private String playerName = "default";
-	private int wins = 0;
-	private int losses = 0;
+	private int wins;
+	private int losses;
 	private String filepath;
 	public int HandCount = 0;
 	private int AIHandCount = 0;
@@ -103,6 +103,14 @@ public class Player implements Serializable {
 		handOfCards.clear();
 		AIhandOfCards.clear();
 		return null;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Player ").append(playerName).append(", Money: ").append(money).append(", wins: ")
+				.append(wins).append(", losses: ").append(losses).append("]");
+		return builder.toString();
 	}
 
 }

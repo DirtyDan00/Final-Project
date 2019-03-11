@@ -1,9 +1,11 @@
 package models;
 
+import java.io.Serializable;
+
 import enums.Numbers;
 import enums.Suit;
 
-public class Card {
+public class Card implements Serializable {
 	
 	private Suit suit;
 	private Numbers number;
@@ -11,7 +13,6 @@ public class Card {
 //creates a card with a number and suit
 //getters and setters too
 	//get value function that returns # on the card
-
 	public Card(Numbers numbers, Suit suit) {
 		super();
 		this.number = numbers;
@@ -33,6 +34,7 @@ public class Card {
 	public void setNumber(Numbers number) {
 		this.number = number;
 	}
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

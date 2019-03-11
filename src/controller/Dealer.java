@@ -1,15 +1,20 @@
 package controller;
 
+import java.io.Console;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
+import enums.Numbers;
 import lib.ConsoleIO;
+import models.CalculateHand;
 import models.Card;
 import models.Deck;
 import models.Player;
+import enums.WinCondition;
 
 public class Dealer {
 
@@ -19,6 +24,10 @@ public class Dealer {
 	private static boolean doubleDown = false;
 	private static boolean awakenAI = false;
 	private static boolean fold = false;
+	private static boolean stand = false;
+	private static boolean wonGame = false;
+	private static boolean EndGame = false;
+	private static boolean loopMenu = true;
 
 	public static void run() {
 		Menu();
@@ -29,12 +38,13 @@ public class Dealer {
 
 	private static void Menu() {
 
-		boolean loopMenu = true;
+		loopMenu = true;
 		do {
-
+			//have another option that keeps playing the game with the same player?
+			
 			System.out.println("Welcome to Jakes Blackjack");
 			System.out.println("Please choose an option to start this gamblin!");
-			String[] prompt = {"Create a player profile", "Load a player Profile" };
+			String[] prompt = { "Create a player profile", "Load a player Profile" };
 
 			int playerInput = ConsoleIO.promptForMenuSelection(prompt, true);
 
@@ -50,16 +60,15 @@ public class Dealer {
 				loopMenu = false;
 				System.out.println("We don't need your service anyways!");
 			}
-		} while (loopMenu = true);
+		} while (loopMenu);
 	}
 
 	private static void PromptForUserName() {
-		Player thisPlayer = new Player();
 		String prompt = ("So what would you like your name to be?");
 
-		String PlayerName = ConsoleIO.promptForInput(prompt, false);
+		String playerName = ConsoleIO.promptForInput(prompt, false);
 
-		thisPlayer.setPlayerName(PlayerName);
+		p.setPlayerName(playerName);
 		System.out.println("Thats a goofy name, but it works");
 		System.out.println("also were giving you $1000 bucks to gamble with, go nuts.");
 		p.setMoney(1000);
@@ -70,62 +79,152 @@ public class Dealer {
 	}
 
 	private static void PlayGame() {
-		boolean continueLooping = true;
+		System.out.println(p.toString());
 		System.out.println("Alright! Lets get this game started!");
 		d.ReFillDeck();
 		d.ShuffleDeck();
 		p.ReciveCard(d.DrawACard());
 		p.ReciveCard(d.DrawACard());
-		do {
-		System.out.println(p.getHandOfCards());
-		System.out.println("theres ya cards, now, what would you like to do?");
-		String[] options = {"Hit", "Stand", "Double Down", "Fold"};
-		int choice = ConsoleIO.promptForMenuSelection(options, false);
-		
-		if (choice == 1) {
-			System.out.println("Aight! here's ya card!");
-			p.ReciveCard(d.DrawACard());
+		System.out.println("Aight there's ya cards");
+		switch (WinCondition()) {
+		case PLAYERBLACKJACK:
+			wonGame = true;
+			EndGame = true;
+			break;
+		case AIBLACKJACK:
+			wonGame = false;
+			EndGame = true;
+			
+			break;
+		}
+		while (!EndGame) {
+			
+			if (stand == true) {
+				EndGame = true;
+			}
 			System.out.println(p.getHandOfCards());
-			if (p.getHandCount() > 5) {
-				System.out.println("Woah woah, you got too many cards there bucko, you only can have 5!");
-				continueLooping = true;
-				
-			}else {
-				awakenAI = true;
-				DealerAI();
-			}
-			
-			
-		}
-		if (choice == 2) {
-			System.out.println("aight, dont take a card then");
-			continueLooping = true;
-			awakenAI = true;
-			DealerAI();
-		}
-		if (choice == 3) {
-			System.out.println("Oh? You feelin lucky Champ? Well lets see");
-			doubleDown = true;
-			if (doubleDown == true) {
-				continueLooping = false;
-				awakenAI = true;
-				DealerAI();
-			}
-		}
-		if (choice == 4) {
-			System.out.println("You out already? suck to be you Chump.");
-			fold = true;
-			WinCondition();
-			
-			continueLooping = false;
-		}
-		
-		}while (continueLooping);
-		
+			System.out.println("now, what would you like to do?");
+			String[] options = { "Hit", "Stand", "Double Down", "Fold" };
+			int choice = ConsoleIO.promptForMenuSelection(options, false);
 
+			if (choice == 1) {
+				System.out.println("Aight! here's ya card!");
+				p.ReciveCard(d.DrawACard());
+				System.out.println(p.getHandOfCards());
+				if (p.getHandCount() == 5) {
+					System.out.println("Woah woah, you got too many cards there bucko, you only can have 5!");
+					continue;
+					
+
+				}
+				if (WinCondition() == WinCondition.PLAYERBUST ) {
+					EndGame = true;
+					break;
+				}
+
+			}
+			if (choice == 2) {
+				System.out.println("aight, dont take a card then");
+				DealerAI();
+				WinCondition();
+				if (WinCondition() == WinCondition.AIBUST ) {
+					EndGame = true;
+					break;
+				}
+			}
+			if (choice == 3) {
+				System.out.println("Oh? You feelin lucky Champ? Well lets see");
+				doubleDown = true;
+				if (doubleDown == true) {
+					EndGame = true;
+					DealerAI();
+					if (WinCondition() == WinCondition.AIBUST ) {
+						break;
+					}
+				}
+			}
+			if (choice == 4) {
+				fold = true;
+				WinCondition();
+				EndGame = true;
+				
+
+			}
+
+		}
+		switch (WinCondition()) {
+		case AIBLACKJACK: System.out.println("The Dealer got 21, you lose");
+			wonGame = false;
+			CalculateWinnings();
+			break;
+		case AIBUST: System.out.println("The Dealer Busted, you won!");
+		wonGame = true;
+		CalculateWinnings();
+			break;
+		case AIGREATER: System.out.println("The Dealers hand was greater than yours, you lose");
+		wonGame = false;
+		CalculateWinnings();
+			break;
+		case PLAYERBLACKJACK: System.out.println("You got 21! you win, nice job");
+		wonGame = true;
+		CalculateWinnings();
+			break;
+		case PLAYERBUST: System.out.println("You busted, better luck next time.");
+		wonGame = false;
+		CalculateWinnings();
+			break;
+		case PLAYERFOLD: System.out.println("You out already? suck to be you Chump.");
+		wonGame = false;
+		CalculateWinnings();
+			break;
+		case PLAYERGREATER: System.out.println("Your hand was greater than the dealers, you won!");
+		wonGame = true;
+		CalculateWinnings();
+			break;
+		case TIE: System.out.println("You two tied, dealer wins by default");
+		
+			wonGame = false;
+			CalculateWinnings();
+			break;
+			
+		}
+		//CalculateWinnings();
+		
 	}
 
-	
+	private static int checkTheAce() {
+		int sum;
+		sum = CalculateHand.calculatePlayerHand(p);
+		if (sum > 21) {
+			ArrayList<Card> Hand = p.getHandOfCards();
+			for (Card card : Hand) {
+				if (card.getNumber() == Numbers.ACE) {
+					sum -= 10;
+					if (sum <= 21) {
+						break;
+					}
+				}
+			}
+		}
+		return sum;
+	}
+
+	private static int checkTheAceAIEdition() {
+		int sum;
+		sum = CalculateHand.calculatePlayerAI(p);
+		if (sum > 21) {
+			ArrayList<Card> Hand = p.getAIhandOfCards();
+			for (Card card : Hand) {
+				if (card.getNumber() == Numbers.ACE) {
+					sum -= 10;
+					if (sum <= 21) {
+						break;
+					}
+				}
+			}
+		}
+		return sum;
+	}
 
 	private static void SavePlayer() {
 		if (p.getFilepath() == null) {
@@ -140,7 +239,7 @@ public class Dealer {
 			out.writeObject(p);
 			out.close();
 			fileOut.close();
-			System.out.printf("Serialized data is saved in " + p.getFilepath());
+			System.out.println("Serialized data is saved in " + p.getFilepath());
 		} catch (IOException i) {
 			i.printStackTrace();
 		}
@@ -149,6 +248,7 @@ public class Dealer {
 	private static void LoadPlayer() {
 		String prompt = ("Where would you like to load the player from?");
 		String input = ConsoleIO.promptForInput(prompt, false);
+
 		try {
 			FileInputStream fileIn = new FileInputStream(input);
 			ObjectInputStream in = new ObjectInputStream(fileIn);
@@ -164,75 +264,124 @@ public class Dealer {
 			return;
 
 		}
+		ResetGame();
 
 	}
 
 	private static void DealerAI() {
-		//have dealer shoot for 19 on average
-		if (awakenAI = true && p.getAIhandOfCards() == null) {
+		// presume AI is done
+		System.out.println("Dealers turn, you dont get to see the dealers hand because THATS CHEATING, no good cheater.");
+		if (p.getAIhandOfCards().size() == 0) {
 			p.AiReciveCard(d.DrawACard());
 			p.AiReciveCard(d.DrawACard());
-			
+
 		}
-		if (p.getAIHandCount() <= 2) {
-			p.AiReciveCard(d.DrawACard());
+		if (p.getAIhandOfCards().size() < 5) {
+			int sum = checkTheAceAIEdition();
+			int playerSum = checkTheAce();
+			if (sum <= 17) {
+				p.AiReciveCard(d.DrawACard());
+			} else if (sum <= playerSum) {
+				p.AiReciveCard(d.DrawACard());
+			} else {
+				stand = true;
+				EndGame = true;
+			}
+
 		}
-		
+
 	}
 
-	private static void WinCondition() {
-		String WinMessage;
-		//the different ways you can win at blackjack
-		if (fold = true) {
-			System.out.println("You gave up. You lose..");
-		}
+	private static WinCondition WinCondition() {
 		
-		switch () {
-		case 1: WinMessage = "You got An Ace and A face card! BLAKJACK! you win!";
-			break;
-		case 2: WinMessage = "You got a sum of 21! BlackJack! you win!";
-			break;
-		case 3: WinMessage = "Your Sum of cards was greater than the dealers! you win!";
-			break;
-		case 4: WinMessage = "Your Sum of cards was less than the dealers! you lose..";
-			break;
-		case 5: WinMessage = "You went past 21! what the heck, you had one job. you lose..";
-		
+		int sumPlayer = checkTheAce();
+		int sumAi = checkTheAceAIEdition();
+		if (sumAi == 21) {
+			return WinCondition.AIBLACKJACK;
+		} else if (sumPlayer == 21) {
+			return WinCondition.PLAYERBLACKJACK;
+		} else if (sumPlayer > 21) {
+			return WinCondition.PLAYERBUST;
+		} else if (sumAi > 21) {
+			return WinCondition.AIGREATER;
+		} else if (fold == true) {
+			return WinCondition.PLAYERFOLD;
+		} else if (sumAi < sumPlayer) {
+			return WinCondition.PLAYERGREATER;
+		} else {
+			return WinCondition.TIE;
 		}
+
+		// the different ways you can win at blackjack
+		
+			
+		
 	}
 
 	private static void CalculateWinnings() {
-		//add a win to their profile and use the double down boolean to check for x2 the winnings 
-		if () {
-			p.setWins(+1);
-			p.setMoney(+1000);
-			SavePlayer();
-			ResetGame();
-		}
-		if (doubleDown = true) {
-			p.setWins(+1);
-			p.setMoney(+2000);
-			SavePlayer();
-			ResetGame();
-		}
-	}
+		// add a win to their profile and use the double down boolean to check for x2
+		// the winnings
+		if (wonGame == true) {
+			
+			
+			p.clearHand();
+			if (doubleDown) {
+				p.setWins(p.getWins() + 1);
+				p.setMoney(p.getMoney() * 4);
 
-	private static void CalculateLosses() {
-		//add a loss to their profile and use the double down boolean to check for x2 the losses
-		if () {
-			p.setLosses(-1);
-			p.setMoney(-1000);
-		}
-		if (doubleDown = true) {
-			p.setLosses(+1);
-			p.setMoney(-2000);
-		}
+			}
+			} else {
+
+				p.setWins(+1);
+				p.setMoney(p.getMoney() * 2);
+			}
+			if (wonGame == false) {
+				p.clearHand();
+				if (doubleDown) {
+					p.setLosses(p.getLosses() + 1);
+					p.setMoney(p.getMoney() * -1);
+					
+				} else {
+					p.setLosses(p.getLosses() + 1);
+					p.setMoney(0);
+				}
+				
+			}
+
+		
+		SavePlayer();
+		PlayAgain();
 	}
 
 	private static void ResetGame() {
 		p.clearHand();
 		d.ReFillDeck();
-		Menu();
+		EndGame = false;
+
+	}
+	//no currerntly does not exit
+	private static void PlayAgain() {
 		
+		String prompt = ("Would You like to play again? yes/no");
+		boolean play = ConsoleIO.promptForBool(prompt, "yes", "no");
+		if (play == true) {
+			ResetGame();
+			playAsTheSamePlayer();
+
+		} else {
+			
+			loopMenu = false;
+			
+			
+		}
+	}
+	private static void playAsTheSamePlayer() {
+		String prompt = ("Would you like to keep playing as the same player? yes/no");
+		boolean samePlayer = ConsoleIO.promptForBool(prompt, "yes", "no");
+		if (samePlayer == true) {
+			PlayGame();
+		} else {
+			Menu();
+		}
 	}
 }
