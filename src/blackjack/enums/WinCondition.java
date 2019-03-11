@@ -1,4 +1,4 @@
-package enums;
+package blackjack.enums;
 
 public enum WinCondition {
 

@@ -1,6 +1,5 @@
-package controller;
+package blackjack.controller;
 
-import java.io.Console;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -8,13 +7,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
-import enums.Numbers;
+import blackjack.enums.Numbers;
+import blackjack.enums.WinCondition;
+import blackjack.models.CalculateHand;
+import blackjack.models.Card;
+import blackjack.models.Deck;
+import blackjack.models.Player;
 import lib.ConsoleIO;
-import models.CalculateHand;
-import models.Card;
-import models.Deck;
-import models.Player;
-import enums.WinCondition;
 
 public class Dealer {
 
@@ -86,6 +85,7 @@ public class Dealer {
 		p.ReciveCard(d.DrawACard());
 		p.ReciveCard(d.DrawACard());
 		System.out.println("Aight there's ya cards");
+		System.out.println(p.getHandOfCards());
 		switch (WinCondition()) {
 		case PLAYERBLACKJACK:
 			wonGame = true;
@@ -102,7 +102,6 @@ public class Dealer {
 			if (stand == true) {
 				EndGame = true;
 			}
-			System.out.println(p.getHandOfCards());
 			System.out.println("now, what would you like to do?");
 			String[] options = { "Hit", "Stand", "Double Down", "Fold" };
 			int choice = ConsoleIO.promptForMenuSelection(options, false);
@@ -239,7 +238,7 @@ public class Dealer {
 			out.writeObject(p);
 			out.close();
 			fileOut.close();
-			System.out.println("Serialized data is saved in " + p.getFilepath());
+			//System.out.println("Serialized data is saved in " + p.getFilepath());
 		} catch (IOException i) {
 			i.printStackTrace();
 		}

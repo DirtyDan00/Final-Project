@@ -1,6 +1,6 @@
-package Driver;
+package blackjack.driver;
 
-import controller.Dealer;
+import blackjack.controller.Dealer;
 
 public class Main {
 

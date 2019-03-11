@@ -1,13 +1,11 @@
-package models;
+package blackjack.models;
 
 import java.io.Serializable;
 
-import enums.Numbers;
-import models.Card;
-import models.Deck;
-import models.Player;
-import enums.Numbers;
-//use to convert the enmus into actual numbers to calculate the players and dealers hand
+import blackjack.enums.Numbers;
+import blackjack.models.Card;
+import blackjack.models.Deck;
+import blackjack.models.Player;
 
 public class CalculateHand{
 

@@ -1,12 +1,12 @@
-package models;
+package blackjack.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-import enums.Numbers;
-import enums.Suit;
+import blackjack.enums.Numbers;
+import blackjack.enums.Suit;
 
 public class Deck implements Serializable {
 	Random rand = new Random();

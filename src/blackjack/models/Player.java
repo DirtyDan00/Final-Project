@@ -1,8 +1,9 @@
-package models;
+package blackjack.models;
 
-import models.Card;
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import blackjack.models.Card;
 
 public class Player implements Serializable {
 

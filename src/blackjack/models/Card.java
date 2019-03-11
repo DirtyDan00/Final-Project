@@ -1,9 +1,9 @@
-package models;
+package blackjack.models;
 
 import java.io.Serializable;
 
-import enums.Numbers;
-import enums.Suit;
+import blackjack.enums.Numbers;
+import blackjack.enums.Suit;
 
 public class Card implements Serializable {
 	
