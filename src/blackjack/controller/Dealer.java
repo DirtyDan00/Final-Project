@@ -153,35 +153,43 @@ public class Dealer {
 		}
 		switch (WinCondition()) {
 		case AIBLACKJACK: System.out.println("The Dealer got 21, you lose");
+		getdealhand();
 			wonGame = false;
 			CalculateWinnings();
 			break;
 		case AIBUST: System.out.println("The Dealer Busted, you won!");
+		getdealhand();
 		wonGame = true;
 		CalculateWinnings();
 			break;
 		case AIGREATER: System.out.println("The Dealers hand was greater than yours, you lose");
+		getdealhand();
 		wonGame = false;
 		CalculateWinnings();
 			break;
 		case PLAYERBLACKJACK: System.out.println("You got 21! you win, nice job");
+		getdealhand();
 		wonGame = true;
 		CalculateWinnings();
 			break;
 		case PLAYERBUST: System.out.println("You busted, better luck next time.");
+		getdealhand();
+		
 		wonGame = false;
 		CalculateWinnings();
 			break;
 		case PLAYERFOLD: System.out.println("You out already? suck to be you Chump.");
+		getdealhand();
 		wonGame = false;
 		CalculateWinnings();
 			break;
 		case PLAYERGREATER: System.out.println("Your hand was greater than the dealers, you won!");
+		getdealhand();
 		wonGame = true;
 		CalculateWinnings();
 			break;
 		case TIE: System.out.println("You two tied, dealer wins by default");
-		
+		getdealhand();
 			wonGame = false;
 			CalculateWinnings();
 			break;
@@ -320,31 +328,31 @@ public class Dealer {
 	private static void CalculateWinnings() {
 		// add a win to their profile and use the double down boolean to check for x2
 		// the winnings
-		if (wonGame == true) {
+		if (doubleDown == true) {
 			
 			
 			p.clearHand();
-			if (doubleDown) {
+			
 				p.setWins(p.getWins() + 1);
 				p.setMoney(p.getMoney() * 4);
 
-			}
-			} else {
+			
+			} if (wonGame == true) {
 
 				p.setWins(+1);
 				p.setMoney(p.getMoney() * 2);
 			}
-			if (wonGame == false) {
+			if (doubleDown == true) {
 				p.clearHand();
-				if (doubleDown) {
+				
 					p.setLosses(p.getLosses() + 1);
 					p.setMoney(p.getMoney() * -1);
 					
-				} else {
-					p.setLosses(p.getLosses() + 1);
-					p.setMoney(0);
-				}
 				
+			}
+			if (wonGame == false){
+				p.setLosses(p.getLosses() + 1);
+				p.setMoney(0);
 			}
 
 		
@@ -382,5 +390,8 @@ public class Dealer {
 		} else {
 			Menu();
 		}
+	}
+	private static void getdealhand() {
+		System.out.println(p.getAIhandOfCards());
 	}
 }
