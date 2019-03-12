@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import lib.ConsoleIO;
 import risk.controllers.RiskController;
 
+
 public class Dealer {
 
 	private static Player p = new Player();
