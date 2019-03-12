@@ -33,7 +33,6 @@ public class Dealer {
 		// ammout of cards
 
 	}
-	
 
 	private static void Menu() {
 
@@ -366,7 +365,6 @@ public class Dealer {
 		EndGame = false;
 
 	}
-	//no currerntly does not exit
 	private static void PlayAgain() {
 		
 		String prompt = ("Would You like to play again? yes/no");
