@@ -21,7 +21,6 @@ public class Dealer {
 	private static Deck d = new Deck();
 	private static Card c = new Card(null, null);
 	private static boolean doubleDown = false;
-	private static boolean awakenAI = false;
 	private static boolean fold = false;
 	private static boolean stand = false;
 	private static boolean wonGame = false;
