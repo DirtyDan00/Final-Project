@@ -33,6 +33,7 @@ public class Dealer {
 		// ammout of cards
 
 	}
+	
 
 	private static void Menu() {
 
