@@ -329,10 +329,10 @@ public class Dealer {
 		// the winnings
 			
 			 if (wonGame == true) {
+				 p.clearHand();
 
 				if (doubleDown == true) {
 					
-					p.clearHand();
 					
 					p.setWins(p.getWins() + 1);
 					p.setMoney(p.getMoney() * 4);
@@ -341,8 +341,8 @@ public class Dealer {
 				p.setMoney(p.getMoney() * 2);
 			}
 			if (wonGame == false){
+				p.clearHand();
 				if (doubleDown == true) {
-					p.clearHand();
 					
 					p.setLosses(p.getLosses() + 1);
 					p.setMoney(p.getMoney() * -1);
