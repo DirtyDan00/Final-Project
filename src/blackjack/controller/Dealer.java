@@ -327,29 +327,28 @@ public class Dealer {
 	private static void CalculateWinnings() {
 		// add a win to their profile and use the double down boolean to check for x2
 		// the winnings
-		if (doubleDown == true) {
 			
-			
-			p.clearHand();
-			
-				p.setWins(p.getWins() + 1);
-				p.setMoney(p.getMoney() * 4);
+			 if (wonGame == true) {
 
-			
-			} if (wonGame == true) {
-
+				if (doubleDown == true) {
+					
+					p.clearHand();
+					
+					p.setWins(p.getWins() + 1);
+					p.setMoney(p.getMoney() * 4);
+				}
 				p.setWins(+1);
 				p.setMoney(p.getMoney() * 2);
 			}
-			if (doubleDown == true) {
-				p.clearHand();
-				
+			if (wonGame == false){
+				if (doubleDown == true) {
+					p.clearHand();
+					
 					p.setLosses(p.getLosses() + 1);
 					p.setMoney(p.getMoney() * -1);
 					
-				
-			}
-			if (wonGame == false){
+					
+				}
 				p.setLosses(p.getLosses() + 1);
 				p.setMoney(0);
 			}
