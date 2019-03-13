@@ -15,7 +15,7 @@ import blackjack.models.Deck;
 import blackjack.models.Player;
 import javafx.stage.Stage;
 import lib.ConsoleIO;
-import risk.controllers.RiskController;
+//import risk.controllers.RiskController;
 
 
 public class Dealer {
@@ -62,7 +62,7 @@ public class Dealer {
 				System.out.println("We don't need your service anyways!");
 			}
 		} while (loopMenu);
-		menu.Main.showMenu();
+		//menu.Main.showMenu();
 	}
 
 	private static void PromptForUserName() {
