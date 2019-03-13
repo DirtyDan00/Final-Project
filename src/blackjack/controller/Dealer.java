@@ -15,7 +15,7 @@ import blackjack.models.Deck;
 import blackjack.models.Player;
 import javafx.stage.Stage;
 import lib.ConsoleIO;
-import risk.controllers.RiskController;
+//import risk.controllers.RiskController;
 
 
 public class Dealer {
@@ -62,7 +62,7 @@ public class Dealer {
 				System.out.println("We don't need your service anyways!");
 			}
 		} while (loopMenu);
-		menu.Main.showMenu();
+		//menu.Main.showMenu();
 	}
 
 	private static void PromptForUserName() {
@@ -125,7 +125,7 @@ public class Dealer {
 				}
 
 			}
-			if (choice == 2) {
+			else if (choice == 2) {
 				System.out.println("aight, dont take a card then");
 				DealerAI();
 				WinCondition();
@@ -134,7 +134,7 @@ public class Dealer {
 					break;
 				}
 			}
-			if (choice == 3) {
+			else if (choice == 3) {
 				System.out.println("Oh? You feelin lucky Champ? Well lets see");
 				doubleDown = true;
 				if (doubleDown == true) {
@@ -145,7 +145,7 @@ public class Dealer {
 					}
 				}
 			}
-			if (choice == 4) {
+			else if (choice == 4) {
 				fold = true;
 				WinCondition();
 				EndGame = true;
